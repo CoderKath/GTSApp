@@ -25,7 +25,7 @@
 <ul class="bg-c-lite-green navbar-nav sidebar sidebar-dark accordion " id="accordionSidebar">
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
-      <a class="nav-link" id="DashboardAdmin" href="{% url 'DashboardAdmin' %}">
+      <a class="nav-link" id="DashboardAdmin" href="{% url 'saodashboard' %}">
         {% if user.profile_picture %}
           <img class="img-fluid img-profile rounded-circle" src="{{request.user.profile_picture.url}}">
         {% else %}
@@ -47,7 +47,7 @@
       </li>
   
       <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
+      <hr class="sidebar-divider">
       
       <!-- Nav Item - Charts -->
       <li class="nav-item">
@@ -58,7 +58,7 @@
       </li>
 
       <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
+      <hr class="sidebar-divider">
 
      
       <li class="nav-item">
@@ -74,7 +74,7 @@
           </div>
       </li>
 
-      <hr class="sidebar-divider d-none d-md-block">
+      <hr class="sidebar-divider">
       
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
@@ -91,7 +91,7 @@
     </li>
 
     <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
+    <hr class="sidebar-divider">
     
     <!-- Nav Item - Charts -->
     <li class="nav-item">

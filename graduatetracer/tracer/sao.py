@@ -10,7 +10,7 @@ from django.db.models import Q
 from django.contrib import messages
 
 from django.conf import settings
-
+from django.utils.encoding import force_str
 from django.core.mail import send_mail, BadHeaderError
 from django.template.loader import render_to_string
 from django.db.models.query_utils import Q
@@ -31,10 +31,79 @@ from django.urls import reverse_lazy
 from django.core.mail import EmailMessage
 
 
-
 # @login_required(login_url='login')
-# @allowed_users(allowed_roles=['is_staff', 'is_admin_sao'])
-def DashboardAdmin(request):
+# @allowed_users(allowed_roles=['is_admin_sao'])
+# def DashboardAdmin(request):
+#     jobs = Advertise.objects.all().order_by('-date_created')
+#     job_categories = JobCategory.objects.all().order_by('-id')
+#     announcements = Announcement.objects.all().order_by('-date_created')
+
+#     top_notif_announcements = Announcement.objects.all().order_by(
+#         '-date_created').filter(announcement_notif_counter=False)[:3]
+#     top_notif_jobs = Advertise.objects.all().order_by(
+#         '-date_created').filter(job_advertise_notif_counter=False)[:3]
+
+#     count_users = User.objects.filter(graduate=True).count()
+#     count_employed = User.objects.filter(employed=True).count()
+#     count_unemployed = User.objects.filter(unemployed=True).count()
+#     count_approved = User.objects.filter(approved=True).count()
+#     count_pending = 0
+    
+#     User = User.objects.all()
+#     for user in User:
+#         if user.graduate and user.pending:
+#             count_pending+=1
+#             print(count_pending)
+    
+    
+#     # if user 
+
+#     count_jobs_advertised = Advertise.objects.all().count()
+#     count_job_requests = JobRequest.objects.all().count()
+
+#     user = request.user
+#     user_chat_bot_notifications_counter = chat_bot_notifications_counter(user)
+#     user_top_nav_notifications_counter = top_nav_notifications_counter(user)
+
+#     user_announcement_notifications_counter = announcement_notifications_counter(
+#         user)
+#     user_job_advertise_notifications_counter = job_advertise_notifications_counter(
+#         user)
+#     user_job_request_notifications_counter = job_request_notifications_counter(
+#         user)
+#     user_job_category_notif_counter = job_category_notifications_counter(user)
+
+#     vote_results = JobRequest.objects.all().order_by('job_category', '-total_vote')
+
+#     context = {
+#                 'announcements': announcements,
+#                 'jobs': jobs,
+#                 'job_categories': job_categories,
+#                 'top_notif_announcements': top_notif_announcements,
+#                 'top_notif_jobs': top_notif_jobs,
+
+#                 'count_users': count_users,
+#                 'count_employed': count_employed,
+#                 'count_unemployed': count_unemployed,
+#                 'count_approved': count_approved,
+#                 'count_pending': count_pending,
+#                 'count_jobs_advertised': count_jobs_advertised,
+#                 'count_job_requests': count_job_requests,
+
+#                 'vote_results': vote_results,
+#                 'vote_results': vote_results,
+
+#                 'user_chat_bot_notifications_counter': user_chat_bot_notifications_counter,
+#                 'user_top_nav_notifications_counter': user_top_nav_notifications_counter,
+#                 'user_announcement_notifications_counter': user_announcement_notifications_counter,
+#                 'user_job_advertise_notifications_counter': user_job_advertise_notifications_counter,
+#                 'user_job_request_notifications_counter': user_job_request_notifications_counter,
+#                 'user_job_category_notif_counter': user_job_category_notif_counter,
+#                 }
+
+#     return render(request, 'admin/index.html', context)
+
+def SaoDashboard(request):
     jobs = Advertise.objects.all().order_by('-date_created')
     job_categories = JobCategory.objects.all().order_by('-id')
     announcements = Announcement.objects.all().order_by('-date_created')
@@ -48,7 +117,13 @@ def DashboardAdmin(request):
     count_employed = User.objects.filter(employed=True).count()
     count_unemployed = User.objects.filter(unemployed=True).count()
     count_approved = User.objects.filter(approved=True).count()
-    count_pending = User.objects.filter(pending=True).count()
+    count_pending = 0
+    
+    users = User.objects.all()
+    for user in users:
+        if user.graduate and user.pending:
+            count_pending+=1
+            print(count_pending)
 
     count_jobs_advertised = Advertise.objects.all().count()
     count_job_requests = JobRequest.objects.all().count()
@@ -92,9 +167,7 @@ def DashboardAdmin(request):
                 'user_job_request_notifications_counter': user_job_request_notifications_counter,
                 'user_job_category_notif_counter': user_job_category_notif_counter,
                 }
-
-    return render(request, 'admin/index.html', context)
-
+    return render(request, 'admin/saodashboard.html', context)
 #Count all Notification
 
 def announcement_notifications_counter(user):
@@ -164,8 +237,8 @@ def top_nav_notifications_counter(user):
 
     return user_notifications_count
 
-# @login_required(login_url='login')
-# @allowed_users(allowed_roles=['is_admin_sao'])
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['is_admin_sao'])
 def profile_picture(request, pk):
     user = User.objects.get(id=pk)
     user_info = ProfileForm(instance=user)
@@ -181,13 +254,13 @@ def profile_picture(request, pk):
                 user_info.save()
                 messages.success(
                     request, 'Your Profile Updated Successfully')
-                return redirect('DashboardAdmin')
+                return redirect('saodashboard')
         else:
             if user_info.is_valid():
                 user_info.save()
                 messages.success(
                     request, 'Your Profile Updated Successfully')
-                return redirect('DashboardAdmin')
+                return redirect('saodashboard')
 
     context = {'user': user, 'user_info': user_info, 'full_name': full_name}
     return render(request, "admin/profile.html", context)
@@ -236,8 +309,8 @@ def delete_announcement(request, pk):
     messages.success(request, 'Successfully Deleted')
     return redirect('display_announcements')
 
-# @login_required(login_url='login')
-# @allowed_users(allowed_roles=['is_admin_sao'])
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['is_admin_sao'])
 def pendingaccounts(request):
     gradAccts = User.objects.all()
 
@@ -246,16 +319,16 @@ def pendingaccounts(request):
                 }
     return render(request, 'admin/pending.html', context)
 
-# @login_required(login_url='login')
-# @allowed_users(allowed_roles=['is_admin_sao'])
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['is_admin_sao'])
 def approvedaccounts(request):
     gradAccts = User.objects.all()
 
     context = {'gradAccts': gradAccts}
     return render(request, 'admin/approved.html', context)
 
-# @login_required(login_url='login')
-# @allowed_users(allowed_roles=['is_admin_sao'])
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['is_admin_sao'])
 def ApprovedUser(request, pk):
 
     if request.method == 'POST':

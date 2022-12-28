@@ -32,27 +32,26 @@
       </a>
     </li>
 
+    {% if request.user.system_admin %}
     <!-- Divider -->
     <hr class="sidebar-divider">
     <!-- Heading -->
-
-      {% if request.user.system_admin %}
-      <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseone" aria-expanded="true" aria-controls="collapseone">
-              <i class="fas fa-users"></i>
-              <span>Admin Management</span><i class="bi bi-chevron-down ms-auto"></i>
-          </a>
-          <div id="collapseone" class="collapse" aria-labelledby="headingone" data-parent="#accordionSidebar">
-              <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" id="create_user_management" href="{% url 'create_user_management' %}">Create Account</a>
-                <a class="collapse-item" id="display_user_management" href="{% url 'display_user_management' %}">Display Accounts</a>
-              </div>
-          </div>
-      </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseone" aria-expanded="true" aria-controls="collapseone">
+            <i class="fas fa-users"></i>
+            <span>Admin Management</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <div id="collapseone" class="collapse" aria-labelledby="headingone" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a class="collapse-item" id="create_user_management" href="{% url 'create_user_management' %}">Create Account</a>
+              <a class="collapse-item" id="display_user_management" href="{% url 'display_user_management' %}">Display Accounts</a>
+            </div>
+        </div>
+    </li>
       {% endif %}
 
     <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
+    <hr class="sidebar-divider">
 
     <li class="nav-item">
       <a class="nav-link" id="school_report" href="{% url 'school_report' %}">
@@ -62,7 +61,7 @@
     </li>
 
     <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
+    <hr class="sidebar-divider">
     
     <!-- Nav Item - Charts -->
     <li class="nav-item">

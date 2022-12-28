@@ -3,11 +3,12 @@ from django.utils import timezone
 from datetime import date
 import os
 import datetime
+ 
 from django.contrib.auth.models import (
     AbstractBaseUser, AbstractUser, BaseUserManager
 )
-
-
+ 
+ 
 class UserManager(BaseUserManager):
     def create_user(self, email,
                     profile_picture=None,
@@ -27,6 +28,7 @@ class UserManager(BaseUserManager):
                     is_dumanjugExt=False,
                     is_danaoCampus=False,
                     is_ginatilanExt=False,
+                    is_malabuyocExt=False,
                     is_mainCampus=False,
                     is_moalboalCampus=False,
                     is_nagaExt=False,
@@ -43,7 +45,7 @@ class UserManager(BaseUserManager):
             raise ValueError("Users must have an email address")
         if not password:
             raise ValueError("Users must have a password")
-
+ 
         user_obj = self.model(email=self.normalize_email(email),
                               profile_picture=profile_picture,
                               first_name=first_name,
@@ -57,17 +59,17 @@ class UserManager(BaseUserManager):
         user_obj.staff = is_staff
         user_obj.admin = is_admin
         user_obj.is_active = is_active
-
+ 
         user_obj.graduate = is_graduate
         user_obj.employed = is_employed
         user_obj.unemployed = is_unemployed
-
+ 
         user_obj.system_admin = is_system_admin
         user_obj.admin_sao = is_admin_sao
         user_obj.dean = is_dean
         user_obj.campus_director = is_campus_director
         user_obj.university_pres = is_university_pres
-
+ 
         user_obj.argaoCampus = is_argaoCampus
         user_obj.bariliCampus = is_bariliCampus
         user_obj.carmenCampus = is_carmenCampus
@@ -76,6 +78,7 @@ class UserManager(BaseUserManager):
         user_obj.danaoCampus = is_danaoCampus
         user_obj.dumanjugExt = is_dumanjugExt
         user_obj.ginatilanExt = is_ginatilanExt
+        user_obj.malabuyocExt = is_malabuyocExt
         user_obj.mainCampus = is_mainCampus
         user_obj.moalboalCampus = is_moalboalCampus
         user_obj.nagaExt = is_nagaExt
@@ -84,17 +87,17 @@ class UserManager(BaseUserManager):
         user_obj.sanfernandoExt = is_sanfernandoExt
         user_obj.sanfranciscoCampus = is_sanfranciscoCampus
         user_obj.tuburanCampus = is_tuburanCampus
-
+ 
         user_obj.save(using=self._db)
         return user_obj
-
+ 
     def create_staffuser(self, email, password=None):
         user = self.create_user(email,
                                 password=password,
                                 is_staff=True,
                                 )
         return user
-
+ 
     def create_superuser(self, email, password=None):
         user = self.create_user(email,
                                 password=password,
@@ -103,19 +106,24 @@ class UserManager(BaseUserManager):
                                 is_system_admin=True,
                                 )
         return user
-    
-year_dropdown = []
-for y in range(1912, (datetime.datetime.now().year + 1)):
-    year_dropdown.append((y, y))
-
+ 
+ 
+ 
+ 
+ 
 class User(AbstractBaseUser):
     email = models.EmailField(
         max_length=255, unique=True)
-
+   
+    year_dropdown = []
+    for y in range(1912, (datetime.datetime.now().year + 1)):
+        year_dropdown.append((y, y))
+ 
     GENDER = (
         ('Male', 'Male'),
         ('Female', 'Female'),
      )
+   
     # Date_Graduated =(
     #     ('2020', '2020'),
     #     ('2021', '2021'),
@@ -264,9 +272,9 @@ class User(AbstractBaseUser):
         ('Master of Arts in Education Major in Teaching Physics', 'Master of Arts in Education Major in Teaching Physics'),
         ('Master of Arts in Vocational Education', 'Master of Arts in Vocational Education'),
         ('Master of Science in AgriBusiness', 'Master of Science in AgriBusiness'),
-
+ 
     )
-
+ 
     School = (
             ('Argao Campus', 'Argao Campus'),
             ('Barili Campus', 'Barili Campus'),
@@ -276,6 +284,7 @@ class User(AbstractBaseUser):
             ('Danao Campus', 'Danao Campus'),
             ('Dumanjug Extension Campus', 'Dumanjug Extension Campus'),
             ('Ginatilan Extension Campus', 'Ginatilan Extension Campus'),
+            ('Malabuyoc Extension Campus', 'Malabuyoc Extension Campus'),
             ('Main Campus', 'Main Campus'),
             ('Moalboal Campus', 'Moalboal Campus'),
             ('Naga Extension Campus', 'Naga Extension Campus'),
@@ -285,7 +294,7 @@ class User(AbstractBaseUser):
             ('San Francisco Campus', 'San Francisco Campus'),
             ('Tuburan Campus', 'Tuburan Campus'),
         )
-
+ 
     profile_picture = models.ImageField(default="default_profile_2.png", null=True, blank=True)
     IDNum = models.PositiveIntegerField(blank=True, null=True, unique=True)
     first_name = models.CharField(max_length=200, null=True)
@@ -296,25 +305,25 @@ class User(AbstractBaseUser):
     gender = models.CharField(max_length=50, blank=True, choices=GENDER, null=True)
     address = models.CharField(max_length=50, blank=True, null=True)
     contact_number = models.CharField(max_length=200, null=True, blank=True)
-    date_graduated = models.IntegerField(('date_graduated'), choices=year_dropdown, default=datetime.datetime.now().year)
+    date_graduated = models.IntegerField(('date_graduated'),choices=year_dropdown, default=datetime.datetime.now().year)
     course_type = models.CharField(max_length=100, blank=True, null=True, choices=Course_Type)
     employment_status = models.CharField(max_length=100, blank=True, null=True, choices=Employment_Status)
     school = models.CharField(max_length=100, blank=True, null=True, choices=School)
     user_type = models.CharField(max_length=100, blank=True, null=True, choices=Type_of_User)
     job_description = models.CharField(max_length=200, null=True, blank=True)
     skill = models.CharField(max_length=200, null=True, blank=True)
-
+ 
     # employment_status = models.ForeignKey(GraduateStatus, on_delete=models.CASCADE, blank=True, null=True)
     employed = models.BooleanField(default=False)
     unemployed = models.BooleanField(default=False)
-
+ 
     graduate = models.BooleanField(default=False)
     admin_sao = models.BooleanField(default=False)
     system_admin = models.BooleanField(default=False)
     dean = models.BooleanField(default=False)
     campus_director = models.BooleanField(default=False)
     university_pres = models.BooleanField(default=False)
-
+ 
     # school = models.ForeignKey(School, on_delete=models.CASCADE, blank=True, null=True)
     argaoCampus= models.BooleanField(default=False)
     bariliCampus= models.BooleanField(default=False)
@@ -324,6 +333,7 @@ class User(AbstractBaseUser):
     danaoCampus= models.BooleanField(default=False)
     dumanjugExt= models.BooleanField(default=False)
     ginatilanExt= models.BooleanField(default=False)
+    malabuyocExt= models.BooleanField(default=False)
     mainCampus= models.BooleanField(default=False)
     moalboalCampus= models.BooleanField(default=False)
     nagaExt= models.BooleanField(default=False)
@@ -332,45 +342,45 @@ class User(AbstractBaseUser):
     sanfernandoExt= models.BooleanField(default=False)
     sanfranciscoCampus= models.BooleanField(default=False)
     tuburanCampus= models.BooleanField(default=False)
-
+ 
     pending = models.BooleanField(default=True)
     approved = models.BooleanField(default=False)
-
+ 
     is_active = models.BooleanField(default=True)  # can login
     staff = models. BooleanField(default=False)  # staff user non superuser
     admin = models.BooleanField(default=False)  # superuser
     timestamp = models.DateTimeField(auto_now_add=True)
-
+ 
     job_sent_list = models.CharField(max_length=5000, null=True)
-
+ 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
-
+ 
     objects = UserManager()
-
+ 
     def __str__(self):
         return self.email
-
+ 
     def get_full_name(self):
         return self.email
-
+ 
     def get_short_name(self):
         return self.email
-
+ 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
         # Simplest possible answer: Yes, always
         return True
-
+ 
     def has_module_perms(self, app_label):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
-
+ 
     @property
     def is_graduate(self):
         return self.graduate
-
+ 
     @property
     def is_argaoCampus(self):
         return self.argaoCampus
@@ -395,6 +405,11 @@ class User(AbstractBaseUser):
     @property
     def is_ginatilanExt(self):
         return self.ginatilanExt
+ 
+    @property
+    def is_malabuyocExt(self):
+        return self.malabuyocExt
+ 
     @property
     def is_mainCampus(self):
         return self.mainCampus
@@ -419,39 +434,39 @@ class User(AbstractBaseUser):
     @property
     def is_tuburanCampus(self):
         return self.tuburanCampus
-
+ 
     @property
     def is_admin_sao(self):
         return self.admin_sao
-
+ 
     @property
     def is_system_admin(self):
         return self.system_admin
     @property
     def is_dean(self):
         return self.dean
-
+ 
     @property
     def is_campus_director(self):
         return self.campus_director
-
+ 
     @property
     def is_university_pres(self):
         return self.university_pres
-
+ 
     @property
     def is_staff(self):
         return self.staff
-
+ 
     @property
     def is_admin(self):
         return self.admin
-
+ 
     class Meta:
         db_table = "user"
-
+ 
 class SystemUser(AbstractUser):
-
+ 
     Type_of_User = (
         ('AdminSao', 'AdminSao'),
         ('SystemAdmin', 'SystemAdmin'),
@@ -468,6 +483,7 @@ class SystemUser(AbstractUser):
             ('Danao Campus', 'Danao Campus'),
             ('Dumanjug Extension Campus', 'Dumanjug Extension Campus'),
             ('Ginatilan Extension Campus', 'Ginatilan Extension Campus'),
+            ('Malabuyoc Extension Campus', 'Malabuyoc Extension Campus'),
             ('Main Campus', 'Main Campus'),
             ('Moalboal Campus', 'Moalboal Campus'),
             ('Naga Extension Campus', 'Naga Extension Campus'),
@@ -483,7 +499,7 @@ class SystemUser(AbstractUser):
     first_name = models.CharField(max_length=45, blank=True)
     middle_name = models.CharField(max_length=45, blank=True)
     last_name = models.CharField(max_length=45, blank=True)
-
+ 
     school = models.CharField(max_length=100, blank=True, null=True, choices=School)
     argaoCampus= models.BooleanField(default=False)
     bariliCampus= models.BooleanField(default=False)
@@ -493,6 +509,7 @@ class SystemUser(AbstractUser):
     danaoCampus= models.BooleanField(default=False)
     dumanjugExt= models.BooleanField(default=False)
     ginatilanExt= models.BooleanField(default=False)
+    malabuyocExt= models.BooleanField(default=False)
     mainCampus= models.BooleanField(default=False)
     moalboalCampus= models.BooleanField(default=False)
     nagaExt= models.BooleanField(default=False)
@@ -501,7 +518,7 @@ class SystemUser(AbstractUser):
     sanfernandoExt= models.BooleanField(default=False)
     sanfranciscoCampus= models.BooleanField(default=False)
     tuburanCampus= models.BooleanField(default=False)
-
+ 
     user_type = models.CharField(max_length=100, blank=True, null=True, choices=Type_of_User)
     admin_sao = models.BooleanField(default=False)
     system_admin = models.BooleanField(default=False)
@@ -509,41 +526,43 @@ class SystemUser(AbstractUser):
     campus_director = models.BooleanField(default=False)
     university_pres = models.BooleanField(default=False)
     profile_picture = models.ImageField(default="default_profile_2.png", null=True, blank=True)
-
-
+ 
+ 
     is_active = models.BooleanField(default=True)  # can login
     staff = models. BooleanField(default=False)  # staff user non superuser
     admin = models.BooleanField(default=False)  # superuser
     timestamp = models.DateTimeField(auto_now_add=True)
-
+ 
+    job_sent_list = models.CharField(max_length=5000, null=True)
+ 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
-
+ 
     objects = UserManager()
-
+ 
     def __str__(self):
         return self.email
-
+ 
     def get_full_name(self):
         return self.email
-
+ 
     def get_short_name(self):
         return self.email
-
+ 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
         # Simplest possible answer: Yes, always
         return True
-
+ 
     def has_module_perms(self, app_label):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
-
+ 
     @property
     def is_graduate(self):
         return self.graduate
-
+ 
     @property
     def is_argaoCampus(self):
         return self.argaoCampus
@@ -568,6 +587,11 @@ class SystemUser(AbstractUser):
     @property
     def is_ginatilanExt(self):
         return self.ginatilanExt
+   
+    @property
+    def is_malabuyocExt(self):
+        return self.malabuyocExt
+   
     @property
     def is_mainCampus(self):
         return self.mainCampus
@@ -592,30 +616,30 @@ class SystemUser(AbstractUser):
     @property
     def is_tuburanCampus(self):
         return self.tuburanCampus
-
+ 
     @property
     def is_dean(self):
         return self.dean
-
+ 
     @property
     def is_campus_director(self):
         return self.campus_director
-
+ 
     @property
     def is_university_pres(self):
         return self.university_pres
-
+ 
     @property
     def is_staff(self):
         return self.staff
-
+ 
     @property
     def is_admin(self):
         return self.admin
-
+ 
     class Meta:
         db_table = "systemuser"
-
+ 
 class Post(models.Model):
     body = models.TextField()
     image = models.ImageField(upload_to='upload_photos', blank=True, null=True)
@@ -625,21 +649,21 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, blank=True, related_name='likes')
     dislikes = models.ManyToManyField(
         User, blank=True, related_name='dislikes')
-
+ 
     class Meta:
         db_table = "post"
-
-
+ 
+ 
 class Comment(models.Model):
     comment = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-
+ 
     class Meta:
         db_table = "comment"
-
-
+ 
+ 
 class WorkExperiences(models.Model):
     company_name = models.CharField(max_length=100, blank=True, null=True)
     address = models.CharField(max_length=100, blank=True, null=True)
@@ -648,73 +672,73 @@ class WorkExperiences(models.Model):
     graduateUser = models.ForeignKey(User, on_delete=models.CASCADE)
     experienceStartDate = models.DateField(blank=True, null=True)
     experienceEndDate = models.DateField(blank=True, null=True)
-
+ 
     def __str__(self):
         return self.graduateUser
-
+ 
     class Meta:
         db_table = "workexperiences"
-
+ 
 # Recommender System
-
-
+ 
+ 
 class Announcement(models.Model):
     title = models.CharField(max_length=50, unique=True)
     description = models.TextField(max_length=1000, null=True)
     image = models.ImageField(
         upload_to='announcements/img', null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
-
+ 
     # Notif Counter
     announcement_notif_counter = models.BooleanField(default=False)
-
+ 
     def __str__(self):
         return self.title
-
+ 
     class Meta:
         db_table = "announcement"
-
-
+ 
+ 
 class JobCategory(models.Model):
     title = models.CharField(max_length=50, unique=True)
     description = models.TextField(max_length=1000, null=True)
-
+ 
     # Notif Counter
     job_category_notif_counter = models.BooleanField(default=False)
-
+ 
     def __str__(self):
         return self.title
-
+ 
     class Meta:
         db_table = "jobcategory"
-
-
+ 
+ 
 class CategoryType(models.Model):
     job_category = models.ForeignKey(JobCategory, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     description = models.TextField(max_length=1000, null=True)
     total_vote = models.IntegerField(default=0, editable=False)
-
+ 
     def __str__(self):
         return "{} - {}".format(self.job_category, self.job_category.title)
-
+ 
     class Meta:
         db_table = "categorytype"
-
-
+ 
+ 
 class ControlVote(models.Model):
     user = models.ForeignKey(User,  null=True, on_delete=models.SET_NULL)
     job_category = models.ForeignKey(JobCategory, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
-
+ 
     def __str__(self):
         return "{} - {} - {}".format(self.user, self.job_category, self.status)
-
-
+ 
+ 
     class Meta:
         db_table = "controlvote"
-
-
+ 
+ 
 class JobRequest(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     job_category = models.ForeignKey(
@@ -724,18 +748,18 @@ class JobRequest(models.Model):
     total_vote = models.IntegerField(default=0, editable=False)
     # Notif Counter
     job_request_notif_counter = models.BooleanField(default=False)
-
+ 
     def __str__(self):
         return "{} - {}".format(self.job_category, self.job_category.title)
-
+ 
     class Meta:
         db_table = "jobrequest"
-
-
+ 
+ 
 class Advertise(models.Model):
     job_category = models.ForeignKey(
         JobCategory, on_delete=models.CASCADE, null=True, blank=True)
-
+ 
     # About the Company
     name = models.CharField(max_length=50, null=True)
     address_1 = models.CharField(max_length=50, null=True)
@@ -744,7 +768,7 @@ class Advertise(models.Model):
     phone_number = models.CharField(max_length=50, null=True)
     email_address = models.CharField(max_length=50, null=True)
     personal_website = models.CharField(max_length=50, null=True, blank=True)
-
+ 
     # About the job
     title = models.CharField(max_length=50, null=True)
     description = models.TextField(max_length=1000, null=True)
@@ -752,20 +776,21 @@ class Advertise(models.Model):
         upload_to='advertisement/img', null=True, blank=True)
     salary = models.PositiveIntegerField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
-
+ 
     # Recommender System conditions
     job_sent = models.BooleanField(default=False)
-
-
+ 
     # Notif Counter
     job_advertise_notif_counter = models.BooleanField(default=False)
-
+ 
     def __str__(self):
         return self.title
-
+ 
     def delete(self, *args, **kwargs):
         self.image.delete()
         super().delete(*args, **kwargs)
-
+ 
     class Meta:
         db_table = "advertise"
+ 
+

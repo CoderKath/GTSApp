@@ -38,7 +38,6 @@ ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'tracer.User'
 
 INSTALLED_APPS = [
-    # 'admin_view_permission',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -91,7 +90,7 @@ WSGI_APPLICATION = 'graduatetracer.wsgi.application'
 DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.mysql',
-         'NAME': 'gradstracer',
+         'NAME': 'tracer_db',
          'USER': 'root',
          'PASSWORD': 'graduatetracer',
          'PORT': 3307,

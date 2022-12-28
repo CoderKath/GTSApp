@@ -76,7 +76,7 @@ def loginPage(request):
             if request.user.approved:
                 return redirect('DashboardUser')
             elif request.user.is_admin_sao:
-                return redirect('DashboardAdmin')
+                return redirect('saodashboard')
             elif request.user.is_dean:
                 return redirect('admindash')
             elif request.user.is_campus_director:

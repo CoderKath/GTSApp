@@ -33,16 +33,19 @@ from django.core.mail import EmailMessage
 
 
 # ADMIN
-# @login_required(login_url='login')
-# @allowed_users(allowed_roles=['is_system_admin'])
+@login_required(login_url='login')
 def admindash(request):
     count_users = User.objects.filter(graduate=True).count()
     count_employed = User.objects.filter(employed=True).count()
     count_unemployed = User.objects.filter(unemployed=True).count()
     count_approved = User.objects.filter(approved=True).count()
-    count_pending = User.objects.filter(pending=True).count()
+    count_pending = 0
+    users = User.objects.all()
+    for user in users:
+        if user.graduate and user.pending:
+            count_pending+=1
+            print(count_pending)
 
-    user = request.user
     context = {
                 'count_users': count_users,
                 'count_employed': count_employed,
@@ -52,8 +55,7 @@ def admindash(request):
                 }
     return render(request, 'systemadmin/admindash.html', context)
 
-# @login_required(login_url='login')
-# @allowed_users(allowed_roles=['is_system_admin'])
+@login_required(login_url='login')
 def create_user_management(request):
     adform = RegisterAdminForm()
     if request.method == 'POST':
@@ -70,8 +72,7 @@ def create_user_management(request):
     context = {'adform': adform}
     return render(request, 'systemadmin/create_user_management.html', context)
 
-# @login_required(login_url='login')
-# @allowed_users(allowed_roles=['is_system_admin'])
+@login_required(login_url='login')
 def display_user_management(request):
     ad_info = User.objects.all
     context = {
@@ -79,8 +80,7 @@ def display_user_management(request):
                }
     return render(request, 'systemadmin/display_user_management.html', context)
 
-# @login_required(login_url='login')
-# @allowed_users(allowed_roles=['is_system_admin'])
+@login_required(login_url='login')
 def user_graduates(request):
     user_info = User.objects.all().order_by('-id')
     query_IDNum = []
@@ -115,8 +115,7 @@ def user_graduates(request):
                 }
     return render(request, 'systemadmin/user_graduates.html', context)
 
-# @login_required(login_url='login')
-# @allowed_users(allowed_roles=['is_system_admin'])
+@login_required(login_url='login')
 def usergrad_informations(request, pk):
     user_info = User.objects.get(id=pk)
     JobExperience = WorkExperiences.objects.filter(graduateUser=pk)
@@ -127,8 +126,7 @@ def usergrad_informations(request, pk):
                }
     return render(request, 'systemadmin/usergrad_info.html', context)
 
-# @login_required(login_url='login')
-# @allowed_users(allowed_roles=['is_system_admin'])
+@login_required(login_url='login')
 def adprof(request, pk):
     user = User.objects.get(id=pk)
     user_info = ProfileForm(instance=user)
@@ -156,8 +154,7 @@ def adprof(request, pk):
     return render(request, 'systemadmin/adprof.html', context)
 
 
-# @login_required(login_url='login')
-# @allowed_users(allowed_roles=['is_system_admin'])
+@login_required(login_url='login')
 def school_report(request):
     table = []
     class sr:
@@ -170,8 +167,8 @@ def school_report(request):
     graduate_counter = []
     employed_counter = []
     unemployed_counter = []
-    school_list = ["Argao Campus", "Barili Campus", "Carmen Campus", "Cebu City Mountain Extension Campus", "Daanbantayan Campus", "Danao Campus", "Dumanjug Extension Campus", "Ginatilan Extension Campus", "Main Campus", "Moalboal Campus", "Naga Extension Campus", "Oslob Extension Campus", "Pinamungajan Extension Campus", "San Fernando Extension Campus", "San Francisco Campus", "Tuburan Campus"]
-
+    school_list = ["Argao Campus", "Barili Campus", "Carmen Campus", "Cebu City Mountain Extension Campus", "Daanbantayan Campus", "Danao Campus", "Dumanjug Extension Campus", "Ginatilan Extension Campus", "Malabuyoc Extension Campus", "Main Campus", "Moalboal Campus", "Naga Extension Campus", "Oslob Extension Campus", "Pinamungajan Extension Campus", "San Fernando Extension Campus", "San Francisco Campus", "Tuburan Campus"]
+ 
     i = 0
     j = 0
     while i != len(school_list):
@@ -191,7 +188,7 @@ def school_report(request):
                     j=0
                     break
                 j+=1
-
+ 
     print(graduate_counter)
     print(employed_counter)
     print(unemployed_counter)
@@ -202,7 +199,7 @@ def school_report(request):
         unemployed = unemployed_counter[k]
         s = sr(schools, graduate, employed, unemployed)
         table.append(s)
-
+ 
     context = {'table':table}
     return render(request, 'systemadmin/school_report.html', context)
 

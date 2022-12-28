@@ -8,7 +8,7 @@ def unauthenticated_user(view_func):
             if request.user.is_graduate:
                 return redirect('DashboardUser')
             elif request.user.is_admin_sao:
-                return redirect('DashboardAdmin')
+                return redirect('saodashboard')
             elif request.user.is_system_admin:
                 return redirect('admindash')
             else:
@@ -43,6 +43,7 @@ def allowed_users(allowed_roles=[]):
 
 def admin_only(view_func):
     def wrapper_function(request, *args, **kwargs):
+        
         permissions = None
         if request.user.is_graduate:
             permissions = 'is_graduate'
