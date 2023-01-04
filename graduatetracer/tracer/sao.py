@@ -114,16 +114,18 @@ def SaoDashboard(request):
         '-date_created').filter(job_advertise_notif_counter=False)[:3]
 
     count_users = User.objects.filter(graduate=True).count()
-    count_employed = User.objects.filter(employed=True).count()
-    count_unemployed = User.objects.filter(unemployed=True).count()
+    count_employed = 0
+    count_unemployed = 0
     count_approved = User.objects.filter(approved=True).count()
     count_pending = 0
-    
     users = User.objects.all()
     for user in users:
         if user.graduate and user.pending:
             count_pending+=1
-            print(count_pending)
+        elif user.graduate and user.approved and user.employed:
+            count_employed+=1
+        elif user.graduate and user.approved and user.unemployed:
+            count_unemployed+=1
 
     count_jobs_advertised = Advertise.objects.all().count()
     count_job_requests = JobRequest.objects.all().count()

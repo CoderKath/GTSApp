@@ -4,7 +4,16 @@
 {% load widget_tweaks %}
 
 {% block content %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<div class="pagetitle">
+  <h1>Dashboard</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'admindash' %}">Home</a></li>
+      <li class="breadcrumb-item active">Dashboard</li>
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
+<hr>
   </div><!-- End Page Title -->
       <div class="row">
         <div class="col-xl-3 col-md-6 mb-4">

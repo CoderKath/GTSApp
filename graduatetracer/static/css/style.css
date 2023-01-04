@@ -2450,7 +2450,7 @@ textarea.form-control {
 .breadcrumb {
   font-size: 14px;
   font-family: "Nunito", sans-serif;
-  color: #899bbd;
+  /* color: #899bbd; */
   font-weight: 600;
 }
 
@@ -2470,6 +2470,18 @@ textarea.form-control {
 .breadcrumb .active {
   color: #000000;
   font-weight: 600;
+}
+
+.breadcrumb {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  /* padding: 0.75rem 1rem; */
+  margin-bottom: 1rem;
+  list-style: none;
+  /* background-color: #e9ecef; */
+  border-radius: 0.25rem;
 }
 
 /* Bordered Tabs */

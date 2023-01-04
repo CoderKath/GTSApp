@@ -21,18 +21,22 @@
           <div class="row">
             <div class="col-11">
               <div style="white-space: nowrap" class="mr-inherit">
-                <a class="nav-link post">
-                    <img class="img-profile1 rounded-circle" src="{{post.author.profile_picture.url}}" width=" 40" height="40" alt="User-Profile-Image">
-                    <span class="mr-2 d-lg-inline-flex text-gray-700 small post"><strong>{{post.author.first_name}} {{post.author.middle_name}} {{post.author.last_name}}</strong></span>
+                <a class="nav-link">
+                  {% if user.profile_picture %}
+                    <img style="margin-top: -23px;" class="img-profile1 rounded-circle" src="{{request.user.profile_picture.url}}" width="40" height="40" alt="User-Profile-Image">
+                  {% else %}
+                    <img style="margin-top: -23px;" class="img-profile1 rounded-circle" src="{% static 'img/default_profile_2.png'%}" width="40" height="40" alt="User-Profile-Image">
+                  {% endif %}
+                  <span class="mr-2 d-lg-inline-flex text-gray-700 small post"><strong>{{request.user.first_name}} {{request.user.middle_name}} {{request.user.last_name}}</strong></span>
                 </a>
                 <div class="mt-0 text-dark">
-                    <font class="font1" size="0">{{post.created_on}}</font>
+                  <font class="font1" size="0">{{post.created_on}}</font>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="card-body p-4">
+        <div class="card-body p-2">
           {% if post.image %}
           <div class="row m-auto">
             <div class="col-lg-6">

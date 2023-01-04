@@ -18,7 +18,7 @@
 <!-- ======= Header ======= -->
 <div class="d-flex align-items-center justify-content-between">
     <div class="logo d-flex align-items-center">
-    <img src="{% static 'img/GradTracerLogo.png' %}" alt="">
+    {% comment %} <img src="{% static 'img/GradTracerLogo.png' %}" alt=""> {% endcomment %}
     <span class="d-none d-lg-block mx-3">Recommender System</span>
     </div>
     <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -34,9 +34,9 @@
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.first_name}} {{user.middle_name}} {{user.last_name}}</span>
                 {% if user.profile_picture %}
-                <img class="rounded-circle" src="{{request.user.profile_picture.url}}">
+                <img class="rounded-circle mr-auto" src="{{request.user.profile_picture.url}}">
                 {% else %}
-                <img class="rounded-circle" src="{% static 'img/default_profile_2.png'  %}">
+                <img class="rounded-circle mr-auto" src="{% static 'img/default_profile_2.png'  %}">
                 {% endif %}
             </a>
              <!-- Dropdown - User Information -->

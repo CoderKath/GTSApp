@@ -28,10 +28,13 @@
                   {% endif %}
                   <span class="mr-2 d-lg-inline-flex text-gray-700 small post"><strong>{{request.user.first_name}} {{request.user.middle_name}} {{request.user.last_name}}</strong></span>
                 </a>
+                <div class="mt-0 text-dark">
+                  <font class="font1" size="0">{{post.created_on}}</font>
+                </div>
               </div>
             </div>
           </div>
-          <div class="card-body p-4">
+          <div class="card-body p-2">
             <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
               <div class="mb-4">
