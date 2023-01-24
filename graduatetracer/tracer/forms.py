@@ -365,7 +365,7 @@ class GraduateForm(forms.ModelForm):
          'school': forms.Select(attrs={'class': 'form-control', 'required': 'true'}),
          'employment_status': forms.Select(attrs={'class': 'form-control', 'required': 'true'}),
          'job_description': forms.TextInput(attrs={'class': 'form-control', 'required': 'true'}),
-         'skill': forms.TextInput(attrs={'class': 'form-control', 'required': 'true'}),
+        #  'skill': forms.TextInput(attrs={'class': 'form-control', 'required': 'true'}),
             }
  
     def clean_password(self):

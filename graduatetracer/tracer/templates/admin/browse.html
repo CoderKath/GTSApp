@@ -154,6 +154,7 @@
             <th class="th-w-20" style="white-space: nowrap">Address</th>
             <th class="th-w-20" style="white-space: nowrap">Category</th>
             <th class="th-w-20" style="white-space: nowrap">Salary</th>
+            <th class="th-w-20" style="white-space: nowrap">advertised Users</th>
             <th class="th-w-20" style="white-space: nowrap">Option</th>
           </tr>
       </thead>
@@ -180,6 +181,11 @@
                 {% if ad.salary %}
                   ₱{{ad.salary|intcomma}}
                 {% endif %}
+              </td>
+              <td class="th-w-20" style="white-space: nowrap">
+                <a class="text-black" style="text-decoration: none;" href="{% url 'advertise_sent_history' ad.id %}">
+                {{ ad.job_sent}} Users
+                </a>
               </td>
               <td option-table-wid>
                 <div class="row w-100 m-auto p-0">
@@ -252,7 +258,7 @@
                       <div class="card-footer bg-white">
                         <div class="card-title text-center ">
                           <span>For more information and inquiries please visit our website</span>
-                            <cite class="blockquote-footer"><a href="{{ad.personal_website}}">{{ad.personal_website}}</a>
+                            <cite class="blockquote-footer mt-3"><a href="{{ad.personal_website}}">{{ad.personal_website}}</a>
                             </cite>
                         </div>
                       </div>
@@ -284,7 +290,7 @@
   <div class="row">
     <div class="rightcolumn">
       <div id="accordion">
-        <div class="card mb-4 mt-4 mr-2 ml-2 shadow-sm">
+        <div class="card shadow mb-4 mt-4 mr-2 ml-2">
           <div class="card-header text-center bg-c-lite-green">
             <a class="collapsed card-link" data-toggle="collapse" href="#collapseCategory">
               <h4 class="card-title text-white">Jobs Category</h4>
@@ -309,7 +315,7 @@
           </div>
         </div>
       </div>
-      <div class="card mb-4 mt-4 mr-2 ml-2 shadow-sm d-none d-lg-block">
+      <div class="card shadow mb-4 mt-4 mr-2 ml-2 d-none d-lg-block">
         <div class="card-body">
           <div class="card-title">
             <h4 >About</h4><hr>
@@ -323,7 +329,7 @@
             <span class="text-info">Update</span> and <span class="text-danger">Delete</span>.</p>
         </div>
       </div>
-      <div class="card mb-4 mt-4 mr-2 ml-2 shadow-sm d-none d-lg-block">
+      <div class="card shadow mb-4 mt-4 mr-2 ml-2 d-none d-lg-block">
         <div class="card-body">
           <div class="text-center">
               <img class="img-fluid px-3 px-sm-4 mt-3 mb-4"
@@ -339,7 +345,7 @@
     </div>
     <div class="leftcolumn">
       {% for ad in ads %}
-      <div class="card mb-4 mt-4 mr-2 ml-2 shadow-sm">
+      <div class="card shadow mb-4 mt-4 mr-2 ml-2">
         <div class="card-header pl-3 pr-4 pt-3 pb-0 m-0 bg-c-lite-green text-white">
           <div class="card-title">
             <div class="row">

@@ -103,6 +103,7 @@ urlpatterns = [
 
 
     path('advertise-jobs/', views.advertise, name="advertise"),
+    path('advertise-sent-history/<int:pk>/', views.advertise_sent_history, name="advertise_sent_history"),
     path('view-job/<int:pk>/', views.view_ad, name="view_ad"),
     path('update-advertisement/<int:pk>/', views.update_ad, name="update_ad"),
     path('delete-advertisement/<int:pk>/', views.delete_ad, name="delete_ad"),

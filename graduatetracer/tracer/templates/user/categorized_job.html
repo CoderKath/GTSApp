@@ -2,10 +2,9 @@
 {% block title %}Categorized Job{% endblock %}
 {% block content %}
 {% for category in job_category %}
-  <div class="container">
     <div class="row">
-    <div class="leftcolumn">
-      <div class="card mb-4 mt-4 mr-2 ml-2 shadow-sm">
+      <div class="col-md-8 col-sm-12 col-lg-8">
+        <div class="card shadow mb-4 mt-4 mr-2 ml-2">
         <div class="card-header pl-3 pr-4 pt-3 pb-0 m-0 bg-c-tile text-white card-title">
           <h2 class="text-center">{{category.title}}</h2>
         </div>
@@ -14,8 +13,8 @@
         </div>
       </div>
     </div>
-    <div class="rightcolumn">
-      <div class="card mb-4 mt-4 mr-2 ml-2 shadow-sm">
+    <div class="col-md-4 col-sm-12 col-lg-4">
+      <div class="card shadow mb-4 mt-4 mr-2 ml-2">
         <div class="card-header pl-3 pr-4 pt-3 pb-0 m-0 bg-c-tile text-white card-title">
             <h3>Filter</h3>
         </div>
@@ -38,7 +37,7 @@
   </div>
     {% for ad in ads %}
     {% if ad.job_category.id == category.id %}
-      <div class="card mb-4 mt-4 mr-2 ml-2 shadow-sm">
+    <div class="card shadow mb-4 mt-4 mr-2 ml-2">
         <div class="card-header pl-3 pr-4 pt-3 pb-0 m-0 bg-c-tile text-white">
           <div class="card-title">
             <div class="row">
@@ -93,6 +92,5 @@
 
     {% endif %}
     {% endfor %}
-  </div>
 {% endfor %}
 {% endblock %}

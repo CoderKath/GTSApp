@@ -27,7 +27,7 @@
 </style>
 <div class="row">
 	<div class="col-lg-9 mt-1 ">
-		<div class="card o-hidden mt-3 border-0 shadow-sm ">
+		<div class="card shadow mt-3 border-0">
 			<div class="card-body p-2">
 				<div class="card-header bg-trasparent border-none" style="background-color: #fff;">
 					<a class="nav-link">
@@ -59,7 +59,7 @@
 										<div class="mb-4">
 											{% render_field form.body class="form-control" cols="40" rows="4" placeholder="What is in your mind?" name="title" %}
 										</div>
-										<div class="">
+										<div class="mb-3">
 											<h6 class="text-dark">Image</h6>
 											{% render_field form.image name="image" %}
 										</div>
@@ -83,11 +83,11 @@
 			</div>
 		</div>
 		{% for post in post_list %}
-		<div class="card o-hidden mt-3 border-0 shadow-sm ">
+		<div class="card shadow mt-3 border-0">
 			<div class="card-body p-2">
 				<div class="card-header bg-trasparent border-none" style="background-color: #fff;">
 					<div class="row">
-						<div class="col-11">
+						<div class="col-10">
 							<div style="white-space: nowrap" class="mr-inherit">
 								<a class="nav-link post">
 								<img class="img-profile1 rounded-circle" src="{{post.author.profile_picture.url}}" width=" 40" height="40" alt="User-Profile-Image">
@@ -99,7 +99,7 @@
 							</div>
 						</div>
 						{% if post.author.id == request.user.id %}
-						<div class="col-1">
+						<div class="col-2 text-right">
 							<div class="dropdown no-arrow">
 								<a class="dropdown" href="#" role="button" id="dropdownMenuButton"
 									data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -128,7 +128,7 @@
 						{% endif %}
 					</div>
 				</div>
-				<div class="card-body p-4">
+				<div class="card-body p-2">
 					{% if post.image %}
 					<div class="row m-auto">
 						<div class="col-lg-6">
@@ -145,7 +145,7 @@
 					{% endif %}
 				</div>
 				<div class="card-footer row w-100 m-auto">
-					<div class="col-lg-4 col-md-4 text-center">
+					<div class="col-6 col-lg-4 col-md-4 col-sm-6 text-center">
 						<form method="POST" action="{% url 'like' post.pk %}">
 							{% csrf_token %}
 							<input type="hidden" name="next" value="{{ request.path }}">
@@ -157,7 +157,7 @@
 							</button>
 						</form>
 					</div>
-					<div class="col-lg-4 col-md-4 text-center">
+					<div class="col-6 col-lg-4 col-md-4 col-sm-6 text-center">
 						<form method="POST" action="{% url 'dislike' post.pk %}">
 							{% csrf_token %}
 							<input type="hidden" name="next" value="{{ request.path }}">
@@ -179,7 +179,7 @@
 						  Comment
 						</a>
 						</div> -->
-					<div class="col-lg-4 col-md-4 text-center">
+					<div class="col-12 col-lg-4 col-md-4 col-sm-12 text-center">
 						<a href="{% url 'post-comment' post.id %}" class="btn btn2">
 						<i style="font-size: 19px;" aria-hidden="true" class="fa fa-comment">
 						</i>

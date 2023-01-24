@@ -3,11 +3,10 @@
 {% load humanize %}
 
 {% block content %}
-<div class="container pb-3">
   <div class="text-right pb-3">
 
   </div>
-  <div class="card">
+  <div class="card shadow mb-4">
     <div class="card-header bg-c-tile text-white pb-3">
       <div class="card-title h1 row pb-1">
         <div class="col-11 h2 pl-2 pt-1">
@@ -58,11 +57,10 @@
     <div class="card-footer bg-white">
       <div class="card-title text-center ">
         <span>For more information and inquiries please visit our website</span>
-          <cite class="blockquote-footer"><a href="{{notification.personal_website}}">{{notification.personal_website}}</a>
+          <cite class="blockquote-footer mt-3"><a href="{{notification.personal_website}}">{{notification.personal_website}}</a>
           </cite>
       </div>
     </div>
     {% endif %}
   </div>
-</div>
 {% endblock %}

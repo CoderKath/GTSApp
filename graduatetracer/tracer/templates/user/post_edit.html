@@ -7,7 +7,7 @@
 
   <div class="row">
     <div class="col-lg-9 mt-1 ">
-      <div class="card o-hidden mt-3 border-0 shadow-sm ">
+      <div class="card shadow mb-4 mt-3 ">
         <div class="card-body p-2">
           <a class="btn bg-c-tile text-white shadow-lg" href="{% url 'post-list' %}">Back</a>
           <div class="text-center">
@@ -15,8 +15,9 @@
           </div>
         </div>
       </div>
-      <div class="card o-hidden mt-3 border-0 shadow-sm ">
-        <div class="card-body p-4">
+      <div class="card shadow mb-4 mt-3 ">
+        <div class="card-body p-2 mt-3">
+          <div class="card-header bg-trasparent border-none" style="background-color: #fff;">
           <div class="row">
             <div class="col-11">
               <div style="white-space: nowrap" class="mr-inherit">
@@ -28,8 +29,9 @@
                   {% endif %}
                   <span class="mr-2 d-lg-inline-flex text-gray-700 small post"><strong>{{request.user.first_name}} {{request.user.middle_name}} {{request.user.last_name}}</strong></span>
                 </a>
-                <div class="mt-0 text-dark">
-                  <font class="font1" size="0">{{post.created_on}}</font>
+                  <div class="mt-0 text-dark">
+                   <font class="font1" size="0">{{post.created_on}}</font>
+                  </div>
                 </div>
               </div>
             </div>

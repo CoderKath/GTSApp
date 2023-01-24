@@ -108,7 +108,18 @@ class UserManager(BaseUserManager):
         return user
  
  
+class JobCategory(models.Model):
+    title = models.CharField(max_length=50, unique=True)
+    description = models.TextField(max_length=1000, null=True)
  
+    # Notif Counter
+    job_category_notif_counter = models.BooleanField(default=False)
+ 
+    def __str__(self):
+        return self.title
+ 
+    class Meta:
+        db_table = "jobcategory"
  
  
 class User(AbstractBaseUser):
@@ -311,7 +322,7 @@ class User(AbstractBaseUser):
     school = models.CharField(max_length=100, blank=True, null=True, choices=School)
     user_type = models.CharField(max_length=100, blank=True, null=True, choices=Type_of_User)
     job_description = models.CharField(max_length=200, null=True, blank=True)
-    skill = models.CharField(max_length=200, null=True, blank=True)
+    skill = models.ForeignKey(JobCategory, on_delete=models.CASCADE, null=True, blank=True)
  
     # employment_status = models.ForeignKey(GraduateStatus, on_delete=models.CASCADE, blank=True, null=True)
     employed = models.BooleanField(default=False)
@@ -699,19 +710,6 @@ class Announcement(models.Model):
         db_table = "announcement"
  
  
-class JobCategory(models.Model):
-    title = models.CharField(max_length=50, unique=True)
-    description = models.TextField(max_length=1000, null=True)
- 
-    # Notif Counter
-    job_category_notif_counter = models.BooleanField(default=False)
- 
-    def __str__(self):
-        return self.title
- 
-    class Meta:
-        db_table = "jobcategory"
- 
  
 class CategoryType(models.Model):
     job_category = models.ForeignKey(JobCategory, on_delete=models.CASCADE)
@@ -778,10 +776,13 @@ class Advertise(models.Model):
     date_created = models.DateTimeField(auto_now_add=True, null=True)
  
     # Recommender System conditions
-    job_sent = models.BooleanField(default=False)
+    job_sent = models.IntegerField(default=0, null=True, blank=True)
  
     # Notif Counter
     job_advertise_notif_counter = models.BooleanField(default=False)
+    
+    # Users sent
+    user_advertise_list = models.CharField(max_length=5000, null=True)
  
     def __str__(self):
         return self.title

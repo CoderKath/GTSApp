@@ -94,15 +94,15 @@
   <!-- End -->
 
 <div class="row">
-  <div class="col-sm-auto col-md-auto col-lg-auto col-xl-auto m-auto pb-4">
+  <div class="col-sm-auto col-md-auto col-lg-auto col-xl-auto m-auto mb-3">
     <a href="#" class="btn bg-c-tile text-white shadow-lg" onclick="return show('Page1','Page2');"><h6>Tile View</h6></a>
   </div>
-  <div class="col-sm-auto col-md-auto col-lg-auto col-xl-auto m-auto pb-4">
+  <div class="col-sm-auto col-md-auto col-lg-auto col-xl-auto m-auto mb-3">
     <a href="#" class="btn bg-c-tile text-white shadow-lg" onclick="return show('Page2','Page1');"><h6>List View</h6></a>
   </div>
 </div>
 
-<div id="Page2" class="container-fluid card bg-white mb-4 pr-4 pl-4 pb-3 shadow-sm" style="display:none;">
+<div id="Page2" class="card shadow mb-4 bg-white mb-4 pr-4 pl-4 pb-3" style="display:none;">
   <div class="row-100">
     <div class="row w-20">
     </div>
@@ -263,7 +263,7 @@
   <div class="row">
     <div class="rightcolumn">
       <div id="accordion">
-        <div class="card mb-4 mt-4 mr-2 ml-2 shadow-sm">
+        <div class="card shadow mb-4 mt-4 mr-2 ml-2">
           <div class="card-header text-center bg-c-tile">
             <a class="collapsed card-link" data-toggle="collapse" href="#collapseCategory">
               <h4 class="card-title text-white">Jobs Category</h4>
@@ -288,7 +288,7 @@
           </div>
         </div>
       </div>
-      <div class="card mb-4 mt-4 mr-2 ml-2 shadow-sm d-none d-lg-block">
+      <div class="card shadow mb-4 mt-4 mr-2 ml-2 d-none d-lg-block">
         <div class="card-body">
           <div class="card-title">
             <h4 >About</h4><hr>
@@ -301,7 +301,7 @@
             posted jobs from latest to oldest.
         </div>
       </div>
-      <div class="card mb-4 mt-4 mr-2 ml-2 shadow-sm d-none d-lg-block">
+      <div class="card shadow mb-4 mt-4 mr-2 ml-2 d-none d-lg-block">
         <div class="card-body">
           <div class="text-center">
               <img class="img-fluid px-3 px-sm-4 mt-3 mb-4"
@@ -317,7 +317,7 @@
     </div>
     <div class="leftcolumn">
       {% for ad in ads %}
-      <div class="card mb-4 mt-4 mr-2 ml-2 shadow-sm">
+      <div class="card shadow mb-4 mt-4 mr-2 ml-2 ">
         <div class="card-header pl-3 pr-4 pt-3 pb-0 m-0 bg-c-tile text-white">
           <div class="card-title">
             <div class="row">

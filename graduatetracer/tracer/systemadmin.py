@@ -35,13 +35,13 @@ from django.core.mail import EmailMessage
 # ADMIN
 @login_required(login_url='login')
 def admindash(request):
-    count_users = User.objects.filter(graduate=True).count()
+    count_users = User.objects.filter(approved=True).count()
     count_employed = 0
     count_unemployed = 0
     count_approved = User.objects.filter(approved=True).count()
     count_pending = 0
     users = User.objects.all()
-    for user in users:
+    for user in users: 
         if user.graduate and user.pending:
             count_pending+=1
         elif user.graduate and user.approved and user.employed:

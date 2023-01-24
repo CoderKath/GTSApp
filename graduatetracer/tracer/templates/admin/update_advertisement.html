@@ -3,10 +3,9 @@
 {% load crispy_forms_tags %}
 {% load widget_tweaks %}
 {% block content %}
-<div class="container">
   <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-        <div class="card shadow-sm">
+    <div class="card shadow mb-4">
           <div class="card-header h3 bg-c-lite-green text-white pb-3">
             <div class="card-title h3 row">
               <div class="col-11 pl-2 pt-1">
@@ -88,6 +87,5 @@
           </div>
         </div>
     </form>
-</div>
 
 {% endblock %}

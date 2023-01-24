@@ -28,6 +28,9 @@ from django.views import View
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.core.mail import EmailMessage
+from .models import Advertise
+from socket import gaierror
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
@@ -778,7 +781,7 @@ def EditPostTimeline(request, pk):
             form.save()
             messages.success(
                 request, 'Your Post was Successfully Updated!')
-            return redirect('post-edit', post.id)
+            return redirect('post-list')
     else:
         p = PostFeedForm
 
@@ -1155,6 +1158,27 @@ def display_job_category_notification(request, pk):
     notification = JobCategory.objects.get(id=pk)
     notification.job_category_notif_counter = True
     notification.save()
+    
+    jobs = Advertise.objects.all().order_by('-date_created')
+    job_categories = JobCategory.objects.all().order_by('-id')
+    announcements = Announcement.objects.all().order_by('-date_created')
+
+    top_notif_announcements = Announcement.objects.all().order_by(
+        '-date_created').filter(announcement_notif_counter=False)[:3]
+    top_notif_jobs = Advertise.objects.all().order_by(
+        '-date_created').filter(job_advertise_notif_counter=False)[:3]
+
+    user = request.user
+    user_chat_bot_notifications_count = chat_bot_notifications_counter(user)
+    user_top_nav_notifications_counter = top_nav_notifications_counter(user)
+
+    user_announcement_notifications_counter = announcement_notifications_counter(
+        user)
+    user_job_advertise_notifications_counter = job_advertise_notifications_counter(
+        user)
+    user_job_request_notifications_counter = job_request_notifications_counter(
+        user)
+    user_job_category_notif_counter = job_category_notifications_counter(user)
 
     if 'query' in request.GET:
         query = request.GET['query']
@@ -1171,8 +1195,19 @@ def display_job_category_notification(request, pk):
     context = {'ads': ads,
                'job_category': job_category,
                'notification': notification,
+               'announcements': announcements,
+               'jobs': jobs,
+               'job_categories': job_categories,
+               'top_notif_announcements': top_notif_announcements,
+               'top_notif_jobs': top_notif_jobs,
+               'user_chat_bot_notifications_count': user_chat_bot_notifications_count,
+               'user_top_nav_notifications_counter': user_top_nav_notifications_counter,
+               'user_announcement_notifications_counter': user_announcement_notifications_counter,
+               'user_job_advertise_notifications_counter': user_job_advertise_notifications_counter,
+               'user_job_request_notifications_counter': user_job_request_notifications_counter,
+               'user_job_category_notif_counter': user_job_category_notif_counter,
                }
-    return render(request, 'user/notification_job_catigories.html', context)
+    return render(request, 'user/notification_job_categories.html', context)
 
 
 def advertise(request):
@@ -1201,62 +1236,111 @@ def advertise(request):
 
                 # Job sending Checker
                 job_sents = Advertise.objects.all().order_by('-id')
+
+                graduate = User.objects.all().order_by('-id')
+                
+                category = JobCategory.objects.all().order_by('-id')
+
                 jobs = ""
                 for job_sent in job_sents:
                     jobs += str(job_sent.title) + ", "
                     job_list = [x.strip() for x in jobs.split(',')][:-1]
                 print("Jobs: " + str(jobs))
+
+                grads = ""
+                for grad in graduate: 
+                    grads += str(grad.email) + ", "
+                    user_list = [x.strip() for x in grads.split(',')][:-1]
+                print("Jobs: " + str(grads))
+                
+
+                cats = ""
+                for cat in category: 
+                    cats += str(cat.title) + ", "
+                    user_list = [x.strip() for x in cats.split(',')][:-1]
+                print("Jobs: " + str(cats))
+
+
                 # Users Registered
                 graduates = User.objects.all()
+                advertise = Advertise.objects.all()
+                categories = JobCategory.objects.all()
+                
 
+                    
+                job_sent_to_user = 0
+                categories_test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                # skill = "1234"
                 # Sending mail to graduates
                 for user_graduate in graduates:
                     if user_graduate.graduate:
                         # for job_sent in job_sents:
-
                         if user_graduate.job_sent_list != jobs:
+                            print("Sulod")
                             if user_graduate.job_sent_list == '' or user_graduate.job_sent_list == None:
                                 user_graduate_job_sent_list = []
                             else:
                                 user_graduate_job_sent_list = user_graduate.job_sent_list.split(", ")
-                            print(user_graduate_job_sent_list)
+                            
+                            user_received_advertise = []
                             for i in range(len(job_sents)):
-                                print("job_sents: "+str(job_sents[i].title))
+                                # print("job_sents: "+str(job_sents[i].title))
                                 if job_sents[i].title not in user_graduate_job_sent_list and job_sents[i].title != '':
+
                                     user_graduate_job_sent_list.append(job_sents[i].title)
-                                    # print("Graduate " + str(user_graduate) + ": " +str(user_graduate_job_sent_list))
-                                    graduate_email_address = user_graduate.email
-                                    associated_users = User.objects.filter(Q(email=graduate_email_address))
-                                    if associated_users.exists():
-                                        for user in associated_users:
-                                            subject = "Job Recommendation"
-                                            email_template_name = "admin/email_template.html"
-                                            email_form = {
-                                                "email": user.email,
-                                                'first_name': user.first_name,
-                                                'middle_name': user.middle_name,
-                                                'last_name': user.last_name,
-                                                'company_name': job_sents[i].name,
-                                                'job_title': job_sents[i].title,
-                                                'address_1': job_sents[i].address_1,
-                                                'job_salary': job_sents[i].salary,
-                                                'job_category': job_sents[i].job_category,
-                                                'job_date_created': job_sents[i].date_created,
-                                                'domain': '127.0.0.1:8000',
-                                                'site_name': 'CTU-Ginatilan Recommender System',
-                                                "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-                                                "user": user,
-                                                'token': default_token_generator.make_token(user),
-                                                'protocol': 'http',
-                                            }
-                                            email = render_to_string(
-                                                email_template_name, email_form)
-                                            # print("Email sent to:" + email_form.email)
-                                            try:
-                                                send_mail(subject, email, 'admin@example.com',
-                                                        [user.email], fail_silently=False)
-                                            except BadHeaderError:
-                                                return HttpResponse('Invalid header found.')
+                                    print("Graduate " + str(user_graduate) + ": " +str(user_graduate_job_sent_list))
+                                    for j in range(len(graduate)):
+                                        if graduate[j].graduate:
+                                            if graduate[j].email not in user_received_advertise and graduate[j].email != '':
+                                                if job_sents[i].job_category == graduate[j].skill:
+                                                    print("CAtegory: " + str(job_sents[i].job_category) + "GraduateSkill: " +str(graduate[j].skill))
+                                                    user_received_advertise.append(graduate[j].email)
+                                                    print("Advertise " + str(job_sents[i].title) + ": " +str(user_received_advertise))
+                                                    graduate_email_address = user_graduate.email
+                                                    associated_users = User.objects.filter(Q(email=graduate_email_address))
+                                                    if associated_users.exists():
+                                                        for user in associated_users:
+                                                            subject = "Job Recommendation"
+                                                            email_template_name = "admin/email_template.html"
+                                                            email_form = {
+                                                                "email": user.email,
+                                                                'first_name': user.first_name,
+                                                                'middle_name': user.middle_name,
+                                                                'last_name': user.last_name,
+                                                                'company_name': job_sents[i].name,
+                                                                'job_title': job_sents[i].title,
+                                                                'address_1': job_sents[i].address_1,
+                                                                'job_salary': job_sents[i].salary,
+                                                                'job_category': job_sents[i].job_category,
+                                                                'job_date_created': job_sents[i].date_created,
+                                                                'domain': '127.0.0.1:8000',
+                                                                'site_name': 'CTU-Ginatilan Recommender System',
+                                                                "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                                                                "user": user,
+                                                                'token': default_token_generator.make_token(user),
+                                                                'protocol': 'http',
+                                                            }
+                                                            email = render_to_string(
+                                                                email_template_name, email_form)
+                                                            # print("Email sent to:" + email_form.email)
+                                                            try:
+                                                                send_mail(subject, email, 'admin@example.com',
+                                                                        [user.email], fail_silently=False)
+                                                            except BadHeaderError:
+                                                                return HttpResponse('Invalid header found.')
+                                                            except gaierror:
+                                                                print("error")
+                                        
+                                            grd = ""
+                                            job_sent = 0
+                                            for j in user_received_advertise:
+                                                if j != '':
+                                                    grd += j + ", "
+                                                    job_sent+=1
+                                            job_sents[i].user_advertise_list = grd
+                                            job_sents[i].job_sent = job_sent
+                                            print("How many users: "+str(job_sent))
+                                            job_sents[i].save()
                             temp = ""
                             for i in user_graduate_job_sent_list:
                                 if i != '':
@@ -1265,8 +1349,7 @@ def advertise(request):
                             user_graduate.save()
                         else:
                             print("stop sending the job !!!!!!!!!!")
-
-                return redirect('advertise')
+                return redirect('browser')
         #Add Job Category
         elif request.POST.get('form_type') == 'add_job_category_form':
             add_job_categories = JobCategoryForm(request.POST)
@@ -1281,6 +1364,30 @@ def advertise(request):
     context = {'ads': ads, 'add_job_categories': add_job_categories,
                'job_categories': job_categories}
     return render(request, 'admin/advertise.html', context)
+
+def advertise_sent_history(request, pk):
+
+    
+    graduate = Advertise.objects.get(id=pk)
+    advertise_list = str(graduate.user_advertise_list).split(', ')
+    print(advertise_list)
+    graduates = []
+    for i in advertise_list:
+        try:
+            graduates.append(User.objects.get(email = i))
+        except ObjectDoesNotExist:
+            pass
+
+
+    # print("Advertise " + str(graduate.user_advertise_list))
+
+    context = {
+                'graduate': graduate,
+                'graduates':graduates
+            }
+
+    return render(request, 'admin/advertise_sent_history.html', context)
+
 
 
 def browser(request):
@@ -1299,7 +1406,10 @@ def browser(request):
             query_address_1.append(ad.address_1)
         if ad.salary not in query_salary:
             query_salary.append(ad.salary)
-
+        # job_sent = len(str(ad.user_advertise_list).split(', '))
+        # ad.job_sent = job_sent - 1
+        # ad.save()
+    
     count_employed = User.objects.filter(employed=True).count()
     count_unemployed = User.objects.filter(unemployed=True).count()
     count_job_requests = JobRequest.objects.all().count()

@@ -38,38 +38,35 @@
   </style>
 
 <!-- Begin Page Content -->
-<div class="container-fluid">
+{% comment %} <div class="container"> {% endcomment %}
     <!-- DataTales Example -->
-    <div class="card shadow mb-4">
+      <div class="card shadow mb-4">
         <div class="card-header py-3 bg-gradient-info">
             <h6 class="m-0 font-weight-bold text-white">ADMIN SAO ACCOUNTS</h6>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table id="datatables" class="table table-striped table-bordered" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th class="th-w-20" style="white-space: nowrap">Name</th>
-                            <th class="th-w-20" style="white-space: nowrap">Email</th>
-                            <th class="th-w-20" style="white-space: nowrap">School</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                      {% for ad in ad_info %}
-                        {% if ad.admin_sao %}
-                          <tr>
-                              <td class="th-w-20" style="white-space: nowrap">{{ad.first_name}} {{ad.middle_name}} {{ad.last_name}}</td>
-                              <td class="th-w-20" style="white-space: nowrap">{{ad.email}}</td>
-                              <td class="th-w-20" style="white-space: nowrap">{{ad.school}}</td>
-                          </tr>
-                        {% endif %}
-                      {% endfor %}
-                    </tbody>
-
-                </table>
-
-            </div>
+          <div class="table-responsive">
+            <table id="datatables" class="table table-striped table-bordered" style="width:100%">
+              <thead>
+                <tr>
+                  <th class="th-w-20" style="white-space: nowrap">Name</th>
+                  <th class="th-w-20" style="white-space: nowrap">Email</th>
+                  <th class="th-w-20" style="white-space: nowrap">School</th>
+                </tr>
+              </thead>
+              <tbody>
+                 {% for ad in ad_info %}
+                  {% if ad.admin_sao %}
+                    <tr>
+                      <td class="th-w-20" style="white-space: nowrap">{{ad.first_name}} {{ad.middle_name}} {{ad.last_name}}</td>
+                      <td class="th-w-20" style="white-space: nowrap">{{ad.email}}</td>
+                      <td class="th-w-20" style="white-space: nowrap">{{ad.school}}</td>
+                    </tr>
+                  {% endif %}
+                {% endfor %}
+              </tbody>
+            </table>
+           </div>
         </div>
       </div>
       <div class="card shadow mb-4">
@@ -204,7 +201,7 @@
             </div>
         </div>
     </div>
-</div>
+  {% comment %} </div> {% endcomment %}
 <!-- Sweet Alert -->
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

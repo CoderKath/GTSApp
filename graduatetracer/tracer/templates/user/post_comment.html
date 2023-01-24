@@ -7,7 +7,7 @@
 
 <div class="row">
   <div class="col-lg-9 mt-1 ">
-    <div class="card o-hidden mt-3 border-0 shadow-sm ">
+    <div class="card shadow mb-4 mt-3 ">
       <div class="card-body p-2">
         <a class="btn bg-c-tile text-white shadow-lg" href="{% url 'post-list' %}">Back</a>
         <div class="text-center">
@@ -15,20 +15,16 @@
         </div>
       </div>
     </div>
-    <div class="card o-hidden mt-3 border-0 shadow-sm ">
-      <div class="card-body p-4">
+    <div class="card shadow mb-4 mt-3 ">
+      <div class="card-body p-2 mt-3">
         <div class="card-header bg-trasparent border-none" style="background-color: #fff;">
           <div class="row">
             <div class="col-11">
               <div style="white-space: nowrap" class="mr-inherit">
-                <a class="nav-link">
-                  {% if user.profile_picture %}
-                    <img style="margin-top: -23px;" class="img-profile1 rounded-circle" src="{{request.user.profile_picture.url}}" width="40" height="40" alt="User-Profile-Image">
-                  {% else %}
-                    <img style="margin-top: -23px;" class="img-profile1 rounded-circle" src="{% static 'img/default_profile_2.png'%}" width="40" height="40" alt="User-Profile-Image">
-                  {% endif %}
-                  <span class="mr-2 d-lg-inline-flex text-gray-700 small post"><strong>{{request.user.first_name}} {{request.user.middle_name}} {{request.user.last_name}}</strong></span>
-                </a>
+                <a class="nav-link post">
+                  <img class="img-profile1 rounded-circle" src="{{post.author.profile_picture.url}}" width=" 40" height="40" alt="User-Profile-Image">
+                  <span class="mr-2 d-lg-inline-flex text-gray-700 small post"><strong>{{post.author.first_name}} {{post.author.middle_name}} {{post.author.last_name}}</strong></span>
+              </a>
                 <div class="mt-0 text-dark">
                   <font class="font1" size="0">{{post.created_on}}</font>
                 </div>
@@ -53,7 +49,7 @@
           {% endif %}
         </div>
         <div class="card-footer row w-100 m-auto">
-          <div style="left: -4px;" class="col-lg-4 col-md-4 col-sm-0 text-center">
+          <div class="col-6 col-lg-4 col-md-4 col-sm-6 text-center">
               <form method="POST" action="{% url 'like' post.pk %}">
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{{ request.path }}">
@@ -66,7 +62,7 @@
                 </button>
               </form>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-0 text-center">
+            <div class="col-6 col-lg-4 col-md-4 col-sm-6 text-center">
               <form method="POST" action="{% url 'dislike' post.pk %}">
                   {% csrf_token %}
                   <input type="hidden" name="next" value="{{ request.path }}">
@@ -80,7 +76,7 @@
                   <!-- </button> -->
                 </form>
               </div>
-              <div class="col-lg-4 col-md-4 col-sm-0 text-center">
+              <div class="col-12 col-lg-4 col-md-4 col-sm-12 text-center">
                 <button class="btn btn default">
                   <i style="font-size: 19px;" aria-hidden="true" class="fa fa-comment">
                     <span style="font-size: 14px"> {{ comment_count }} </span>
@@ -90,7 +86,7 @@
               </div>
             </div>
             <div class="card-header bg-trasparent border-none" style="background-color: #fff;">
-              <div class="card-body p-4">
+              <div class="card-body p-2">
                 <form method="POST" enctype="multipart/form-data">
                   {% csrf_token %}
                   <div class="d-flex flex-row">
@@ -116,8 +112,8 @@
                 <div class="card-body d-flex flex-row align-items-start">
                   <div style="white-space: nowrap" class="mr-inherit">
                     <a class="nav-link post">
-                      <img class="img-profile1 rounded-circle" src="{{post.author.profile_picture.url}}" width=" 40" height="40" alt="User-Profile-Image">
-                      <span class="mr-2 d-lg-inline-flex text-gray-700 small post"><strong>{{post.author.first_name}} {{post.author.middle_name}} {{post.author.last_name}}</strong></span>
+                      <img class="img-profile1 rounded-circle" src="{{comment.author.profile_picture.url}}" width=" 40" height="40" alt="User-Profile-Image">
+                      <span class="mr-2 d-lg-inline-flex text-gray-700 small post"><strong>{{comment.author.first_name}} {{comment.author.middle_name}} {{comment.author.last_name}}</strong></span>
                   </a>
                   <div class="mt-0 text-dark">
                       <font class="font1" size="0">{{post.created_on}}</font>

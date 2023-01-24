@@ -6,11 +6,9 @@
 
 {% block content %}
 <link href="{% static 'css/profile.css' %}" rel="stylesheet">
-<div class="container">
   <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="page-content page-container shadow-sm" id="page-content">
-      <div class="card user-card-full">
+    <div class="card shadow mb-4">
         <div class="card-header bg-c-lite-green text-center text-white pt-3 pb-0">
           <div class="card-title">
             <h4>Profile</h4>
@@ -53,10 +51,7 @@
           </div>
         </div>
       </div>
-    </div>
   </form>
-
-</div>
 
 <script src="{% static '/js/profile.js' %}"></script>
 <!-- Sweet Alert -->
